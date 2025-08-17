@@ -1,7 +1,8 @@
 import Person from './Person.js';
 export default class Player extends Person {
-  constructor(x, y, width, height, color = '#ff6b6b') {
+  constructor(x, y, width, height, color, tryInteract) {
     super(x, y, width, height, color); // Person 클래스의 생성자 호출
+    this.tryInteract = tryInteract; // 상호작용 함수 저장
     
     // 이동 상태 관리
     this.isMoving = false;
@@ -38,6 +39,10 @@ export default class Player extends Person {
           break;
         case 'ArrowRight':
           this.startMove(1, 0);
+          e.preventDefault();
+          break;
+        case 'KeyF':
+          this.tryInteract(this.gridX, this.gridY);
           e.preventDefault();
           break;
       }

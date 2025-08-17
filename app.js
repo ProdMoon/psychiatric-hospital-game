@@ -4,11 +4,13 @@
 import Player from './models/Player.js';
 import Game from './models/Game.js';
 import Npc from './models/Npc.js';
+import ChatBox from './models/ChatBox.js';
 
 // 게임 인스턴스
 let game;
 let player;
 let npc;
+let npc2;
 
 // Main application code
 function init() {
@@ -17,18 +19,42 @@ function init() {
   // 게임 초기화
   game = new Game('gameCanvas');
   
-  // 플레이어 생성 (그리드 중앙에 배치)
   const canvasSize = game.getCanvasSize();
   const cellSize = 40; // Player 클래스와 동일한 셀 크기
   const gridCenterX = Math.floor(canvasSize.width / cellSize / 2);
   const gridCenterY = Math.floor(canvasSize.height / cellSize / 2);
+
+  // 하단 채팅 상자 생성
+  const chatBox = new ChatBox(0, canvasSize.height - 150, canvasSize.width, canvasSize.height);
+
+  // NPC 상호작용 함수
+  function tryInteract(gridX, gridY) {
+    if (chatBox.isShow) {
+      chatBox.hide();
+      return;
+    }
+    const npcs = [npc, npc2];
+    npcs.forEach(npc => {
+      if (
+        gridX + 1 === npc.gridX && gridY === npc.gridY ||
+        gridX - 1 === npc.gridX && gridY === npc.gridY ||
+        gridX === npc.gridX && gridY + 1 === npc.gridY ||
+        gridX === npc.gridX && gridY - 1 === npc.gridY
+      ) {
+        chatBox.setMessage(npc.dialogue);
+        chatBox.show();
+      }
+    })
+  }
   
+  // 플레이어 생성 (그리드 중앙에 배치)
   player = new Player(
     gridCenterX * cellSize,  // x 위치 (그리드 중앙)
     gridCenterY * cellSize,  // y 위치 (그리드 중앙)
     40,  // 너비
     40,  // 높이
-    '#4ecdc4'  // 색상
+    '#4ecdc4',  // 색상
+    tryInteract  // 상호작용 함수
   );
 
   npc = new Npc(
@@ -36,12 +62,24 @@ function init() {
     gridCenterY * cellSize,  // y 위치 (그리드 중앙)
     40,  // 너비
     40,  // 높이
-    '#ff6b6b'  // 색상
+    '#ff6b6b',  // 색상
+    '뭔가 수상한 곳이지 않나요? 이 곳엔 당신과 저밖에 없는 것 같군요...'  // 대화 내용
+  );
+
+  npc2 = new Npc(
+    (gridCenterX + 2) * cellSize,  // x 위치 (그리드 중앙 오른쪽)
+    (gridCenterY + 4) * cellSize,  // y 위치 (그리드 중앙)
+    40,  // 너비
+    40,  // 높이
+    '#ff6b6b',  // 색상
+    '사실 저도 있습니다'  // 대화 내용
   );
   
   // 게임에 플레이어 추가
   game.addGameObject(player);
   game.addGameObject(npc);
+  game.addGameObject(npc2);
+  game.addGameObject(chatBox);
 
   // 게임 시작
   game.start();
