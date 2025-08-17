@@ -5,11 +5,32 @@ export default class Game {
     this.isRunning = false;
     this.gameObjects = [];
     this.lastTime = 0;
+    this.keys = {}; // 키 입력 상태를 저장할 객체
+    this.initInput();
+    this.player = null; // 플레이어 객체를 저장할 변수
+    this.npc = null; // NPC 객체를 저장할 변수
     
     // 게임 루프 바인딩
     this.gameLoop = this.gameLoop.bind(this);
   }
   
+
+  initInput() {
+    document.addEventListener('keydown', (e) => {
+      this.keys[e.code] = true;
+
+      if (e.code === 'KeyF' && this.npc?.isPlayerNear) {
+        this.npc.isTalking = !this.npc.isTalking; 
+        // F 키를 눌러 대화 시작/종료
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      this.keys[e.code] = false;
+    });
+  }
+
+
   addGameObject(gameObject) {
     this.gameObjects.push(gameObject);
   }

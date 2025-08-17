@@ -39,6 +39,9 @@ function init() {
     '#ff6b6b'  // 색상
   );
   
+  game.player = player; // 게임에 플레이어 객체 설정
+  game.npc = npc; // 게임에 NPC 객체 설정
+
   // 게임에 플레이어 추가
   game.addGameObject(player);
   game.addGameObject(npc);
