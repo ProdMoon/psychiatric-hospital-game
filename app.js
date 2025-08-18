@@ -31,6 +31,7 @@ function init() {
   function tryInteract(gridX, gridY) {
     if (chatBox.isShow) {
       chatBox.hide();
+      player.inInteraction = false; // 대화창이 열려있으면 상호작용 중지
       return;
     }
     const npcs = [npc, npc2];
@@ -43,6 +44,7 @@ function init() {
       ) {
         chatBox.setMessage(npc.dialogue);
         chatBox.show();
+        player.inInteraction = true; // 대화창이 열리면 상호작용 상태 변경
       }
     })
   }
@@ -80,7 +82,8 @@ function init() {
   game.addGameObject(npc);
   game.addGameObject(npc2);
   game.addGameObject(chatBox);
-
+  game.setPlayer(player);
+  game.setNpcs([npc, npc2]);
   // 게임 시작
   game.start();
   

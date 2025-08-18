@@ -26,18 +26,22 @@ export default class Player extends Person {
       
       switch(e.code) {
         case 'ArrowUp':
+          if (this.inInteraction) return; // 상호작용 중이면 이동 무시
           this.startMove(0, -1);
           e.preventDefault();
           break;
         case 'ArrowDown':
+          if (this.inInteraction) return; // 상호작용 중이면 이동 무시
           this.startMove(0, 1);
           e.preventDefault();
           break;
         case 'ArrowLeft':
+          if (this.inInteraction) return; // 상호작용 중이면 이동 무시
           this.startMove(-1, 0);
           e.preventDefault();
           break;
         case 'ArrowRight':
+          if (this.inInteraction) return; // 상호작용 중이면 이동 무시
           this.startMove(1, 0);
           e.preventDefault();
           break;

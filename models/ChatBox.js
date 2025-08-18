@@ -23,7 +23,7 @@ export default class ChatBox {
       return;
     }
     
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; //투명도 조절 가능 (0~1사이 값)
     ctx.fillRect(
       this.topLeft.x,
       this.topLeft.y,
