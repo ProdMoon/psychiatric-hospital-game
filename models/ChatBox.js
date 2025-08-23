@@ -9,6 +9,10 @@ export default class ChatBox {
   setMessage(message) {
     this.message = message;
   }
+  
+  setNpc(npc) {
+    this.npc = npc;
+  }
 
   show() {
     this.isShow = true;
@@ -30,10 +34,18 @@ export default class ChatBox {
       this.bottomRight.x - this.topLeft.x,
       this.bottomRight.y - this.topLeft.y
     );
+    
+    ctx.fillStyle = '#fff';
+    ctx.font = '20px Arial bold';
+    ctx.fillText(this.npc ? this.npc.name: '', this.topLeft.x + 10, this.topLeft.y + 30);
 
     ctx.fillStyle = '#fff';
     ctx.font = '16px Arial';
-    ctx.fillText(this.message, this.topLeft.x + 10, this.topLeft.y + 30);
+    ctx.fillText(this.message, this.topLeft.x + 10, this.topLeft.y + 60);
+
+    ctx.fillStyle = 'rgba(255, 255, 0, 0.8)';
+    ctx.font = '16px Arial';
+    ctx.fillText('Press F to continue ▼', this.bottomRight.x - 170, this.bottomRight.y - 20);
 
     // 대화창 테두리
     ctx.strokeStyle = '#333';

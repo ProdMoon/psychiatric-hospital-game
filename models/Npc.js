@@ -1,12 +1,13 @@
 import Person from './Person.js';
 
-// TODO: NPC에 붙어서 F키를 누르면 대화창이 뜨도록 구현
-
 export default class Npc extends Person {
-  constructor(x, y, width, height, color, dialogue) {
+  constructor(x, y, width, height, color, name, dialogue) {
     super(x, y, width, height, color);
-    this.dialogue = dialogue;
+    this.name = name; // NPC 이름 저장
+    this.dialogue = dialogue; // 대화 내용을 배열로 저장
+    this.dialogueLength = dialogue.length;
   }
+
 
   update(canvasWidth, canvasHeight) {
     // NPC의 업데이트 로직 (예: AI 움직임)

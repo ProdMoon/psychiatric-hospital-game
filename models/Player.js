@@ -3,6 +3,8 @@ export default class Player extends Person {
   constructor(x, y, width, height, color, tryInteract) {
     super(x, y, width, height, color); // Person 클래스의 생성자 호출
     this.tryInteract = tryInteract; // 상호작용 함수 저장
+    this.talkingProgress = 0; // 대화 진행 상태
+    this.currentNpc = null; // 현재 대화 중인 NPC
     
     // 이동 상태 관리
     this.isMoving = false;
@@ -48,6 +50,9 @@ export default class Player extends Person {
         case 'KeyF':
           this.tryInteract(this.gridX, this.gridY);
           e.preventDefault();
+          if (this.inInteraction) {
+            this.talkingProgress++;
+            }
           break;
       }
     });

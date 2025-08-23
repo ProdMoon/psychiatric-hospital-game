@@ -9,7 +9,7 @@ import ChatBox from './models/ChatBox.js';
 // 게임 인스턴스
 let game;
 let player;
-let npc;
+let npc1;
 let npc2;
 
 // Main application code
@@ -29,24 +29,38 @@ function init() {
 
   // NPC 상호작용 함수
   function tryInteract(gridX, gridY) {
-    if (chatBox.isShow) {
-      chatBox.hide();
-      player.inInteraction = false; // 대화창이 열려있으면 상호작용 중지
-      return;
-    }
-    const npcs = [npc, npc2];
+    const npcs = [npc1, npc2];
     npcs.forEach(npc => {
       if (
         gridX + 1 === npc.gridX && gridY === npc.gridY ||
         gridX - 1 === npc.gridX && gridY === npc.gridY ||
         gridX === npc.gridX && gridY + 1 === npc.gridY ||
         gridX === npc.gridX && gridY - 1 === npc.gridY
-      ) {
-        chatBox.setMessage(npc.dialogue);
+      ) 
+       if (chatBox.isShow && player.currentNpc === npc) {
+        const npc = player.currentNpc;
+        if(player.talkingProgress < npc.dialogueLength) {
+        chatBox.setMessage(npc.dialogue[player.talkingProgress]);
+        chatBox.setNpc(npc);
         chatBox.show();
+        }
+
+        else if (player.talkingProgress === npc.dialogueLength){
+        player.talkingProgress = 0;
+        player.inInteraction = false; // 대화가 끝나면 상호작용 중지
+        player.currentNpc = null;
+        chatBox.hide();
+        }
+      }
+       else if (player.talkingProgress === 0) {
+        chatBox.setMessage(npc.dialogue[0]);
+        chatBox.setNpc(npc);
+        chatBox.show();
+        player.currentNpc = npc;
+        player.talkingProgress = 0;
         player.inInteraction = true; // 대화창이 열리면 상호작용 상태 변경
       }
-    })
+    });
   }
   
   // 플레이어 생성 (그리드 중앙에 배치)
@@ -59,13 +73,32 @@ function init() {
     tryInteract  // 상호작용 함수
   );
 
-  npc = new Npc(
+  npc1 = new Npc(
     (gridCenterX + 2) * cellSize,  // x 위치 (그리드 중앙 오른쪽)
     gridCenterY * cellSize,  // y 위치 (그리드 중앙)
     40,  // 너비
     40,  // 높이
-    '#ff6b6b',  // 색상
-    '뭔가 수상한 곳이지 않나요? 이 곳엔 당신과 저밖에 없는 것 같군요...'  // 대화 내용
+    '#ff7ecbff',  // 색상
+    '간호사 - 히아킨티아', // 이름
+    [
+     '선생님..정신이 좀 드세요?',
+     '정신을 차려보니 중환자 병동 안이네요...',
+     '여긴 선생님이 담당하시던 환자들이 있던 곳이에요.',
+     '여기에서 나가려면 비밀번호를 입력하는 특수한 문을 지나야 해요.',
+     '이번 비밀번호는 335503336인데, 아까 입력해보니 안되더라고요...',
+     '...벌써 비밀번호가 바뀔 시기가 다 되었나봐요.',
+     '...어라?',
+     '새로운 비밀번호 관련 정보가 분명 있었는데!',
+     '아무래도 환자들이 비밀번호를 가져간 것 같아요!',
+     '환자들과 대화해서 비밀번호를 알아내야겠어요...',
+     '어라..? 저기 무언가가  떨어져 있네요?',
+     '!!!',
+     '저건 선생님의 신원 카드에요!',
+     '다행히 옆에는 환자들의 진료 기록지도 있네요!',
+     '저 정보들을 토대로 환자들과 대화할 수 있겠어요.',
+     '물론, 환자들은 선생님이 알고 있는 것과 다른 정보를 제공할 수도 있어요',
+     '그 점에 유의해서 힌트를 모아 탈출해 봅시다..!'
+    ]  // 대화 내용
   );
 
   npc2 = new Npc(
@@ -74,16 +107,17 @@ function init() {
     40,  // 너비
     40,  // 높이
     '#ff6b6b',  // 색상
-    '사실 저도 있습니다'  // 대화 내용
+    '환자 - ',// 이름
+    ['무슨일일까요'],  // 대화 내용
   );
   
   // 게임에 플레이어 추가
   game.addGameObject(player);
-  game.addGameObject(npc);
+  game.addGameObject(npc1);
   game.addGameObject(npc2);
   game.addGameObject(chatBox);
   game.setPlayer(player);
-  game.setNpcs([npc, npc2]);
+  game.setNpcs([npc1, npc2]);
   // 게임 시작
   game.start();
   
