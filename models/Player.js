@@ -1,10 +1,19 @@
 import Person from './Person.js';
 export default class Player extends Person {
-  constructor(x, y, width, height, color, tryInteract) {
+  constructor(x, y, width, height, color, tryInteract, openInventory) {
     super(x, y, width, height, color); // Person 클래스의 생성자 호출
+    
+    
+    
+    // 대화 상태 관리
     this.tryInteract = tryInteract; // 상호작용 함수 저장
     this.talkingProgress = 0; // 대화 진행 상태
     this.currentNpc = null; // 현재 대화 중인 NPC
+    this.currentItem = null; // 현재 상호작용 중인 아이템
+    this.inInteraction = false; // 현재 대화 중이 아님
+    
+    this.inventory = []; // 인벤토리에 있는 아이템 배열
+    this.openInventory = openInventory; // 인벤토리 여는 함수 저장
     
     // 이동 상태 관리
     this.isMoving = false;
@@ -54,6 +63,11 @@ export default class Player extends Person {
             this.talkingProgress++;
             }
           break;
+        case 'KeyB':
+          if (this.inInteraction) return; // 상호작용 중이면 인벤토리 상호작용 무시
+          this.openInventory();
+          e.preventDefault();
+          break;
       }
     });
   }
@@ -78,7 +92,7 @@ export default class Player extends Person {
     this.gridX = newGridX;
     this.gridY = newGridY;
   }
-  
+
   update(canvasWidth, canvasHeight) {
     // 이동 중인 경우 애니메이션 처리
     if (this.isMoving) {

@@ -4,6 +4,7 @@ export default class Npc extends Person {
   constructor(x, y, width, height, color, name, dialogue) {
     super(x, y, width, height, color);
     this.name = name; // NPC 이름 저장
+    this.type = 'Npc';
     this.dialogue = dialogue; // 대화 내용을 배열로 저장
     this.dialogueLength = dialogue.length;
   }

@@ -14,6 +14,10 @@ export default class ChatBox {
     this.npc = npc;
   }
 
+  setItem(item) {
+    this.item = item;
+  }
+
   show() {
     this.isShow = true;
   }
@@ -34,6 +38,13 @@ export default class ChatBox {
       this.bottomRight.x - this.topLeft.x,
       this.bottomRight.y - this.topLeft.y
     );
+
+    if (this.npc === null) {
+      ctx.fillStyle = '#fff';
+      ctx.font = '20px Arial bold';
+      ctx.fillText(this.message, this.topLeft.x + 300, this.topLeft.y + 80);
+    }
+    else {
     
     ctx.fillStyle = '#fff';
     ctx.font = '20px Arial bold';
@@ -45,7 +56,7 @@ export default class ChatBox {
 
     ctx.fillStyle = 'rgba(255, 255, 0, 0.8)';
     ctx.font = '16px Arial';
-    ctx.fillText('Press F to continue ▼', this.bottomRight.x - 170, this.bottomRight.y - 20);
+    ctx.fillText('F키를 눌러 대화 진행하기 ▼', this.bottomRight.x - 200, this.bottomRight.y - 20);
 
     // 대화창 테두리
     ctx.strokeStyle = '#333';
@@ -56,5 +67,6 @@ export default class ChatBox {
       this.bottomRight.x - this.topLeft.x,
       this.bottomRight.y - this.topLeft.y
     );
+   }
   }
 }
