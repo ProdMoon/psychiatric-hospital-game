@@ -11,7 +11,7 @@ import getNpcData from './data/npcData.js';
 let game;
 let player;
 const npcs = [];
-let status = '';
+window.gameStatus = 'default';
 
 // Main application code
 function init() {
@@ -29,22 +29,32 @@ function init() {
   const chatBox = new ChatBox(0, canvasSize.height - 150, canvasSize.width, canvasSize.height);
 
   // NPC 상호작용 함수
-  function tryInteract(gridX, gridY) {
+  async function tryInteract(gridX, gridY) {
     if (chatBox.isShow) {
       chatBox.hide();
       return;
     }
-    npcs.forEach(npc => {
+    for (let i = 0; i < npcs.length; i++) {
+      const npc = npcs[i];
       if (
         gridX + 1 === npc.gridX && gridY === npc.gridY ||
         gridX - 1 === npc.gridX && gridY === npc.gridY ||
         gridX === npc.gridX && gridY + 1 === npc.gridY ||
         gridX === npc.gridX && gridY - 1 === npc.gridY
       ) {
-        chatBox.setMessage(npc.getDialogue(status));
+        if (npc.name) {
+          chatBox.setMessageHeader(`[${npc.name}]`);
+        }
+        chatBox.setMessage(npc.getDialogue(window.gameStatus));
         chatBox.show();
+        if (npc.onInteract && npc.onInteract[window.gameStatus]) {
+          const isYes = await chatBox.getUserResponse();
+          npc.onInteract[window.gameStatus](isYes);
+          chatBox.hide();
+        }
+        break; // 첫 번째로 만나는 NPC와만 상호작용
       }
-    });
+    }
   }
   
   // 플레이어 생성 (그리드 중앙에 배치)

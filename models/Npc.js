@@ -11,7 +11,9 @@ export default class Npc extends Person {
       data.height,
       data.color
     );
+    this.name = data.name;
     this.dialogue = data.dialogue;
+    this.onInteract = data.onInteract || {};
   }
 
   update(canvasWidth, canvasHeight) {
@@ -23,9 +25,9 @@ export default class Npc extends Person {
   }
 
   getDialogue(status) {
-    if (!status) {
-      return this.dialogue.default;
+    if (status && this.dialogue[status]) {
+      return this.dialogue[status];
     }
-    return this.dialogue[status];
+    return this.dialogue.default;
   }
 }
