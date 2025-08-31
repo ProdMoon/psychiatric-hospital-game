@@ -5,12 +5,13 @@ import Player from './models/Player.js';
 import Game from './models/Game.js';
 import Npc from './models/Npc.js';
 import ChatBox from './models/ChatBox.js';
+import getNpcData from './data/npcData.js';
 
 // 게임 인스턴스
 let game;
 let player;
-let npc;
-let npc2;
+const npcs = [];
+let status = '';
 
 // Main application code
 function init() {
@@ -33,7 +34,6 @@ function init() {
       chatBox.hide();
       return;
     }
-    const npcs = [npc, npc2];
     npcs.forEach(npc => {
       if (
         gridX + 1 === npc.gridX && gridY === npc.gridY ||
@@ -41,10 +41,10 @@ function init() {
         gridX === npc.gridX && gridY + 1 === npc.gridY ||
         gridX === npc.gridX && gridY - 1 === npc.gridY
       ) {
-        chatBox.setMessage(npc.dialogue);
+        chatBox.setMessage(npc.getDialogue(status));
         chatBox.show();
       }
-    })
+    });
   }
   
   // 플레이어 생성 (그리드 중앙에 배치)
@@ -57,28 +57,15 @@ function init() {
     tryInteract  // 상호작용 함수
   );
 
-  npc = new Npc(
-    (gridCenterX + 2) * cellSize,  // x 위치 (그리드 중앙 오른쪽)
-    gridCenterY * cellSize,  // y 위치 (그리드 중앙)
-    40,  // 너비
-    40,  // 높이
-    '#ff6b6b',  // 색상
-    '뭔가 수상한 곳이지 않나요? 이 곳엔 당신과 저밖에 없는 것 같군요...'  // 대화 내용
-  );
-
-  npc2 = new Npc(
-    (gridCenterX + 2) * cellSize,  // x 위치 (그리드 중앙 오른쪽)
-    (gridCenterY + 4) * cellSize,  // y 위치 (그리드 중앙)
-    40,  // 너비
-    40,  // 높이
-    '#ff6b6b',  // 색상
-    '사실 저도 있습니다'  // 대화 내용
-  );
+  const npcData = getNpcData();
+  npcData.forEach(data => {
+    const npc = new Npc(data);
+    npcs.push(npc);
+  });
   
   // 게임에 플레이어 추가
   game.addGameObject(player);
-  game.addGameObject(npc);
-  game.addGameObject(npc2);
+  npcs.forEach(npc => game.addGameObject(npc));
   game.addGameObject(chatBox);
 
   // 게임 시작
