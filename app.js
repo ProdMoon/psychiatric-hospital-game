@@ -83,11 +83,6 @@ function init() {
         }
     });
   }
-
-  function openInventory (){
-    
-
-  }
   
   // 플레이어 생성 (그리드 중앙에 배치)
   player = new Player(
@@ -96,8 +91,7 @@ function init() {
     40,  // 너비
     40,  // 높이
     '#4ecdc4',  // 색상
-    tryInteract,  // 상호작용 함수
-    openInventory
+    tryInteract  // 상호작용 함수
   );
 
   npc1 = new Npc(

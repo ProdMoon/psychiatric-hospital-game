@@ -1,6 +1,6 @@
 import Person from './Person.js';
 export default class Player extends Person {
-  constructor(x, y, width, height, color, tryInteract, openInventory) {
+  constructor(x, y, width, height, color, tryInteract) {
     super(x, y, width, height, color); // Person 클래스의 생성자 호출
     
     
@@ -13,7 +13,6 @@ export default class Player extends Person {
     this.inInteraction = false; // 현재 대화 중이 아님
     
     this.inventory = []; // 인벤토리에 있는 아이템 배열
-    this.openInventory = openInventory; // 인벤토리 여는 함수 저장
     
     // 이동 상태 관리
     this.isMoving = false;
@@ -168,5 +167,13 @@ export default class Player extends Person {
       ctx.lineTo(canvas.width, y);
       ctx.stroke();
     }
+  }
+
+  obtainItem(obj) {
+    this.inventory.push(obj);
+  }
+
+  openInventory() {
+    console.log(this.inventory);
   }
 }

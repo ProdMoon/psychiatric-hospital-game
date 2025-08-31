@@ -1,5 +1,3 @@
-import Player from "./Player";
-
 export default class Inventory {
     constructor(topLeftX, topLeftY, bottomRightX, bottomRightY) {
     this.item = [];
