@@ -34,7 +34,7 @@ export default class ChatBox {
       document.addEventListener('keydown', function handler(event) {
         document.removeEventListener('keydown', handler);
         thisbind.isUserInteracting = false;
-        resolve(event.key.toLowerCase() === 'y');
+        resolve(event.key.toLowerCase());
       });
     });
   }

@@ -16,8 +16,8 @@ const data = [
     },
     position: { x: 17, y: 9 },
     onInteract: {
-      phase2: (isYes) => {
-        if (isYes) {
+      phase2: (key) => {
+        if (key === 'y') {
           window.gameNpcs
             .find(npc => npc.id === 'patient1')
             .setDialogue('phase2', '난 여기 있을 사람이 아니야. 날 이곳에 집어넣은 자식을 평생 저주하겠어.')
@@ -30,15 +30,15 @@ const data = [
           window.gameNpcs
             .find(npc => npc.id === 'patient2')
             .setDialogue('phase2', '이곳을 빨리 떠나고 싶은가?')
-            .setInteraction('phase2', (isYes) => {
-              if (isYes) {
+            .setInteraction('phase2', (key) => {
+              if (key === 'y') {
                 window.gameStatus = 'end';
                 window.gamePlayer.setGridPosition(17, 7);
                 window.gamePlayer.color = '#ff6b6b';
                 window.gameNpcs
                   .find(npc => npc.id === 'patient1')
                   .setGridPosition(17, 9);
-              } else {
+              } else if (key === 'n') {
                 window.gameStatus = 'default';
               }
             });
@@ -80,8 +80,8 @@ const data = [
     },
     position: { x: -1, y: 13 },
     onInteract: {
-      default: (isYes) => {
-        if (isYes) {
+      default: (key) => {
+        if (key === 'y') {
           window.gameStatus = 'foundDeadBody';
         }
       },
@@ -99,8 +99,8 @@ const data = [
     },
     position: { x: 13, y: 0 },
     onInteract: {
-      foundDeadBody: (isYes) => {
-        if (isYes) {
+      foundDeadBody: (key) => {
+        if (key === 'y') {
           window.gameStatus = 'phase2';
           window.gamePlayer.setGridPosition(10, 7);
           window.gameNpcs
