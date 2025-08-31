@@ -14,6 +14,13 @@ export default class Person {
     this.y = this.gridY * this.cellSize;
   }
 
+  setGridPosition(gridX, gridY) {
+    this.x = gridX * this.cellSize;
+    this.y = gridY * this.cellSize;
+    this.gridX = gridX;
+    this.gridY = gridY;
+  }
+
   update(canvasWidth, canvasHeight) {
     
   }

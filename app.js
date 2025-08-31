@@ -9,8 +9,8 @@ import getNpcData from './data/npcData.js';
 
 // 게임 인스턴스
 let game;
-let player;
-const npcs = [];
+window.gamePlayer = null;
+window.gameNpcs = [];
 window.gameStatus = 'default';
 
 // Main application code
@@ -34,8 +34,8 @@ function init() {
       chatBox.hide();
       return;
     }
-    for (let i = 0; i < npcs.length; i++) {
-      const npc = npcs[i];
+    for (let i = 0; i < window.gameNpcs.length; i++) {
+      const npc = window.gameNpcs[i];
       if (
         gridX + 1 === npc.gridX && gridY === npc.gridY ||
         gridX - 1 === npc.gridX && gridY === npc.gridY ||
@@ -58,7 +58,7 @@ function init() {
   }
   
   // 플레이어 생성 (그리드 중앙에 배치)
-  player = new Player(
+  window.gamePlayer = new Player(
     gridCenterX * cellSize,  // x 위치 (그리드 중앙)
     gridCenterY * cellSize,  // y 위치 (그리드 중앙)
     40,  // 너비
@@ -70,12 +70,12 @@ function init() {
   const npcData = getNpcData();
   npcData.forEach(data => {
     const npc = new Npc(data);
-    npcs.push(npc);
+    window.gameNpcs.push(npc);
   });
   
   // 게임에 플레이어 추가
-  game.addGameObject(player);
-  npcs.forEach(npc => game.addGameObject(npc));
+  game.addGameObject(window.gamePlayer);
+  window.gameNpcs.forEach(npc => game.addGameObject(npc));
   game.addGameObject(chatBox);
 
   // 게임 시작

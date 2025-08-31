@@ -28,14 +28,17 @@ const data = [
     dialogue: {
       default: '어제부터 저쪽 벽에서 이상한 소리가 들려...',
       foundDeadBody: '으악! 으아아악!',
+      phase2: '뭐라고? 이상한 소리라니... 들은 적 없어.',
     },
     position: { x: 17, y: 13 },
   },
   {
+    // 벽
     color: '#ffffff00',
     dialogue: {
       default: '벽에 작은 균열이 있다... 꺼내볼까?',
       foundDeadBody: '균열을 건드렸더니 무너져 내렸다. 뒤틀린 시체가 발견되었다...',
+      phase2: '단단해 보이는 벽이다.',
     },
     position: { x: -1, y: 13 },
     onInteract: {
@@ -58,6 +61,7 @@ const data = [
       foundDeadBody: (isYes) => {
         if (isYes) {
           window.gameStatus = 'phase2';
+          window.gamePlayer.setGridPosition(10, 7);
         }
       },
     },
